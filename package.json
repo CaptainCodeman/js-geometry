@@ -1,0 +1,27 @@
+{
+  "name": "@captaincodeman/geometry",
+  "version": "1.0.0",
+  "description": "Tree-Shakeable Geometry",
+  "module": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "build": "tsc --module es2015 --declaration",
+    "test": "mocha",
+    "mypublish:pre": "npm run build && cp readme.md package.json dist",
+    "mypublish": "npm run mypublish:pre && npm publish dist --tag latest --access=public"
+  },
+  "author": "Simon Green <simon@captaincodeman.com> (https://github.com/captaincodeman)",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/captaincodeman/js-geometry"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.0",
+    "@types/mocha": "^5.2.7",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.6.2"
+  }
+}
