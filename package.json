@@ -1,13 +1,15 @@
 {
   "name": "@captaincodeman/geometry",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Tree-Shakeable Geometry",
+  "main": "index.cjs",
   "module": "index.js",
   "types": "index.d.ts",
   "scripts": {
     "build": "tsc --module es2015 --declaration",
+    "bundle": "rollup -c",
     "test": "mocha",
-    "mypublish:pre": "npm run build && cp readme.md package.json dist",
+    "mypublish:pre": "npm run build && npm run bundle && cp readme.md package.json dist",
     "mypublish": "npm run mypublish:pre && npm publish dist --tag latest --access=public"
   },
   "author": "Simon Green <simon@captaincodeman.com> (https://github.com/captaincodeman)",
@@ -21,7 +23,10 @@
     "@types/mocha": "^5.2.7",
     "chai": "^4.2.0",
     "mocha": "^6.2.0",
+    "rollup": "^1.20.3",
+    "rollup-plugin-typescript": "^1.0.1",
     "ts-node": "^8.3.0",
+    "tslib": "^1.10.0",
     "typescript": "^3.6.2"
   }
 }
