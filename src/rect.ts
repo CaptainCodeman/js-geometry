@@ -1,5 +1,5 @@
 import { Extendable } from './extendable'
-import { Point, midpoint, add as addPoint, sub as subPoint, scale as scalePoint } from "./point";
+import { Point, middle, add, sub, scale } from "./point";
 
 export class Rect extends Extendable{
   constructor(readonly min: Point, readonly max: Point) {
@@ -8,6 +8,10 @@ export class Rect extends Extendable{
 
   get width() { return this.max.x - this.min.x }
   get height() { return this.max.y - this.min.y }
+}
+
+export function SizedRect(width: number, height: number) {
+  return new Rect(new Point(0, 0), new Point(width, height))
 }
 
 export function overlaps(this: Rect, r: Rect): boolean {
@@ -22,27 +26,37 @@ export function intersect(this: Rect, r: Rect) {
   )
 }
 
-export function scale(this: Rect, s: number) {
+export function resize(this: Rect, s: number) {
   return new Rect(
-    this.min.do(scalePoint, s),
-    this.max.do(scalePoint, s)
+    this.min.do(scale, s),
+    this.max.do(scale, s)
   )
 }
 
-export function add(this: Rect, p: Point) {
+export function addP(this: Rect, p: Point) {
   return new Rect(
-    this.min.do(addPoint, p),
-    this.max.do(addPoint, p)
+    this.min.do(add, p),
+    this.max.do(add, p)
   )
 }
 
-export function sub(this: Rect, p: Point) {
+export function subP(this: Rect, p: Point) {
   return new Rect(
-    this.min.do(subPoint, p),
-    this.max.do(subPoint, p)
+    this.min.do(sub, p),
+    this.max.do(sub, p)
   )
 }
 
-export function middle(this: Rect) {
-  return this.min.do(midpoint, this.max)
+export function center(this: Rect) {
+  return this.min.do(middle, this.max)
+}
+
+export function invert(this: Rect, r: Rect) {
+  const w = this.width / r.width
+  const h = this.height / r.height
+  const min = this.min.do(sub, r.min)
+  return new Rect(
+    min,
+    min.do(add, new Point(w, h))
+  )
 }

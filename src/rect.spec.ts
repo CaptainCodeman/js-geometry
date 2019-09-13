@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import { Point } from './point'
-import { Rect, add, sub, scale, middle, overlaps, intersect } from './rect'
+import { Rect, addP, subP, invert, center, resize, overlaps, intersect } from './rect'
 
 describe('rect', () => {
-  it('should save the values', () => {
+  it('should set the values', () => {
     const r = new Rect(new Point(1, 2), new Point(7, 6))
     expect(r.min.x).to.equal(1)
     expect(r.min.y).to.equal(2)
@@ -19,24 +19,36 @@ describe('rect', () => {
     expect(r.height).to.equal(7)
   })
 
-  it('should add correctly', () => {
-    const r = new Rect(new Point(1, 2), new Point(3, 4)).do(add, new Point(2, 3))
+  it('should add a point', () => {
+    const r = new Rect(new Point(1, 2), new Point(3, 4)).do(addP, new Point(2, 3))
     expect(r.min.x).to.equal(3)
     expect(r.min.y).to.equal(5)
     expect(r.max.x).to.equal(5)
     expect(r.max.y).to.equal(7)
   })
 
-  it('should sub correctly', () => {
-    const r = new Rect(new Point(5, 6), new Point(8, 9)).do(sub, new Point(3, 1))
+  it('should subtract a point', () => {
+    const r = new Rect(new Point(5, 6), new Point(8, 9)).do(subP, new Point(3, 1))
     expect(r.min.x).to.equal(2)
     expect(r.min.y).to.equal(5)
     expect(r.max.x).to.equal(5)
     expect(r.max.y).to.equal(8)
   })
 
-  it('should scale correctly', () => {
-    let r = new Rect(new Point(4, 6), new Point(6, 8)).do(scale, 2)
+  it('should invert a rect', () => {
+    const r1 = new Rect(new Point(5, 6), new Point(8, 9))
+    const r2 = new Rect(new Point(1, 2), new Point(3, 4))
+    const r = r1.do(invert, r2)
+    expect(r.min.x).to.equal(4)
+    expect(r.min.y).to.equal(4)
+    expect(r.max.x).to.equal(5.5)
+    expect(r.max.y).to.equal(5.5)
+    expect(r.width).to.equal(1.5)
+    expect(r.height).to.equal(1.5)
+  })
+
+  it('should resize', () => {
+    let r = new Rect(new Point(4, 6), new Point(6, 8)).do(resize, 2)
     expect(r.min.x).to.equal(8)
     expect(r.min.y).to.equal(12)
     expect(r.max.x).to.equal(12)
@@ -44,7 +56,7 @@ describe('rect', () => {
     expect(r.width).to.equal(4)
     expect(r.height).to.equal(4)
 
-    r = new Rect(new Point(4, 6), new Point(6, 8)).do(scale, 0.5)
+    r = new Rect(new Point(4, 6), new Point(6, 8)).do(resize, 0.5)
     expect(r.min.x).to.equal(2)
     expect(r.min.y).to.equal(3)
     expect(r.max.x).to.equal(3)
@@ -53,8 +65,8 @@ describe('rect', () => {
     expect(r.height).to.equal(1)
   })
 
-  it('should calc middle', () => {
-    const p = new Rect(new Point(4, 6), new Point(6, 8)).do(middle)
+  it('should calc center', () => {
+    const p = new Rect(new Point(4, 6), new Point(6, 8)).do(center)
     expect(p.x).to.equal(5)
     expect(p.y).to.equal(7)
   })
